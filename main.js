@@ -40,7 +40,7 @@ function addWorkout() {
 
   saveWorkouts();
 
-  displayWorkout(workout);
+  displayWorkout(workout, workouts.length - 1);
 
   count++;
   document.getElementById("counter").textContent = count;
@@ -113,9 +113,10 @@ function loadWorkouts() {
   if (saved) {
     workouts = JSON.parse(saved);
 
-    workouts.forEach(w => {
-      displayWorkout(w);
-      count++;
+   workouts.forEach((w, i) => {
+  displayWorkout(w, i);
+  count++;
+});
     });
 
     document.getElementById("counter").textContent = count;
