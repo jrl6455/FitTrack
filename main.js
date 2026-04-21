@@ -53,13 +53,53 @@ function addWorkout() {
   document.getElementById("reps").value = "";
 }
 
-function displayWorkout(workout) {
+function displayWorkout(workout, index) {
   let list = document.getElementById("workoutList");
 
   let item = document.createElement("li");
-  item.textContent = workout.exercise + " - " + workout.sets + " x " + workout.reps;
+  item.className = "d-flex justify-content-between align-items-center";
+
+  item.innerHTML = `
+    <span>${workout.exercise} - ${workout.sets} x ${workout.reps}</span>
+    <button class="btn btn-danger btn-sm">Delete</button>
+  `;
+
+  
+  let btn = item.querySelector("button");
+  btn.onclick = function () {
+    deleteWorkout(index);
+  };
 
   list.appendChild(item);
+}
+
+function deleteWorkout(index) {
+  workouts.splice(index, 1); 
+
+  saveWorkouts(); 
+
+  refreshUI(); 
+}
+
+function refreshUI() {
+  let list = document.getElementById("workoutList");
+  list.innerHTML = "";
+
+  count = 0;
+  chartData = [];
+
+  myChart.data.labels = [];
+  myChart.data.datasets[0].data = [];
+  myChart.update();
+
+  workouts.forEach((w, i) => {
+    displayWorkout(w, i);
+    count++;
+    chartData.push(Number(w.sets));
+    updateChart();
+  });
+
+  document.getElementById("counter").textContent = count;
 }
 
 function saveWorkouts() {
