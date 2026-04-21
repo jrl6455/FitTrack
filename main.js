@@ -1,8 +1,10 @@
 let count = 0;
 let chartData = [];
+let workouts = [];
 
-
+// load saved data when page opens
 window.onload = function () {
+  loadWorkouts();
 
   let ctx = document.getElementById('myChart').getContext('2d');
 
@@ -16,6 +18,12 @@ window.onload = function () {
       }]
     }
   });
+
+  // rebuild chart from saved data
+  workouts.forEach(w => {
+    chartData.push(Number(w.sets));
+    updateChart();
+  });
 };
 
 function addWorkout() {
@@ -28,24 +36,50 @@ function addWorkout() {
     return;
   }
 
+  let workout = { exercise, sets, reps };
+  workouts.push(workout);
 
-  let list = document.getElementById("workoutList");
-  let item = document.createElement("li");
-  item.textContent = exercise + " - " + sets + " x " + reps;
-  list.appendChild(item);
+  saveWorkouts();
 
+  displayWorkout(workout);
 
   count++;
   document.getElementById("counter").textContent = count;
 
-
   chartData.push(Number(sets));
   updateChart();
-
 
   document.getElementById("exercise").value = "";
   document.getElementById("sets").value = "";
   document.getElementById("reps").value = "";
+}
+
+function displayWorkout(workout) {
+  let list = document.getElementById("workoutList");
+
+  let item = document.createElement("li");
+  item.textContent = workout.exercise + " - " + workout.sets + " x " + workout.reps;
+
+  list.appendChild(item);
+}
+
+function saveWorkouts() {
+  localStorage.setItem("workouts", JSON.stringify(workouts));
+}
+
+function loadWorkouts() {
+  let saved = localStorage.getItem("workouts");
+
+  if (saved) {
+    workouts = JSON.parse(saved);
+
+    workouts.forEach(w => {
+      displayWorkout(w);
+      count++;
+    });
+
+    document.getElementById("counter").textContent = count;
+  }
 }
 
 function updateChart() {
@@ -53,4 +87,3 @@ function updateChart() {
   myChart.data.datasets[0].data = chartData;
   myChart.update();
 }
-
