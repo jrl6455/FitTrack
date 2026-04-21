@@ -73,6 +73,7 @@ function displayWorkout(workout, index) {
   list.appendChild(item);
 }
 
+
 function deleteWorkout(index) {
   workouts.splice(index, 1); 
 
