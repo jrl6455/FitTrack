@@ -2,7 +2,6 @@ let count = 0;
 let chartData = [];
 let workouts = [];
 
-// load saved data when page opens
 window.onload = function () {
   loadWorkouts();
 
@@ -19,7 +18,7 @@ window.onload = function () {
     }
   });
 
-  // rebuild chart from saved data
+
   workouts.forEach(w => {
     chartData.push(Number(w.sets));
     updateChart();
