@@ -1,9 +1,8 @@
-let workouts = [];
 let chartData = [];
-let count = 0;
-
 
 window.onload = function () {
+  loadWorkouts();
+
   let ctx = document.getElementById('myChart').getContext('2d');
 
   window.myChart = new Chart(ctx, {
@@ -16,12 +15,9 @@ window.onload = function () {
       }]
     }
   });
-
-  loadWorkouts();
 };
 
-
-function addWorkout() {
+async function addWorkout() {
   let exercise = document.getElementById("exercise").value;
   let sets = document.getElementById("sets").value;
   let reps = document.getElementById("reps").value;
@@ -31,70 +27,60 @@ function addWorkout() {
     return;
   }
 
-  let workout = {
-    exercise,
-    sets: Number(sets),
-    reps: Number(reps)
-  };
+  let workout = { exercise, sets, reps };
 
-  workouts.push(workout);
-
-  localStorage.setItem("workouts", JSON.stringify(workouts));
+  await fetch("http://localhost:3000/workouts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(workout)
+  });
 
   loadWorkouts();
-
-
-  document.getElementById("exercise").value = "";
-  document.getElementById("sets").value = "";
-  document.getElementById("reps").value = "";
 }
 
-
-function loadWorkouts() {
-  let saved = localStorage.getItem("workouts");
-
-  workouts = saved ? JSON.parse(saved) : [];
+async function loadWorkouts() {
+  let res = await fetch("http://localhost:3000/workouts");
+  let data = await res.json();
 
   let list = document.getElementById("workoutList");
   list.innerHTML = "";
 
-  count = 0;
+  let counter = 0;
   chartData = [];
-
 
   myChart.data.labels = [];
   myChart.data.datasets[0].data = [];
 
-  workouts.forEach((w, i) => {
-    // display workout
+  data.forEach((w, index) => {
     let item = document.createElement("li");
-    item.className = "d-flex justify-content-between align-items-center";
 
     item.innerHTML = `
-      <span>${w.exercise} - ${w.sets} x ${w.reps}</span>
-      <button class="btn btn-danger btn-sm" onclick="deleteWorkout(${i})">Delete</button>
+      ${w.exercise} - ${w.sets} x ${w.reps}
+      <button onclick="deleteWorkout(${index})" class="btn btn-danger btn-sm">Delete</button>
     `;
 
     list.appendChild(item);
 
-
-    count++;
-
- 
-    chartData.push(w.sets);
-    myChart.data.labels.push("Workout " + (i + 1));
+    counter++;
+    chartData.push(Number(w.sets));
   });
 
-  myChart.data.datasets[0].data = chartData;
-  myChart.update();
+  document.getElementById("counter").textContent = counter;
 
-  document.getElementById("counter").textContent = count;
+  chartData.forEach((value, i) => {
+    myChart.data.labels.push("Workout " + (i + 1));
+    myChart.data.datasets[0].data.push(value);
+  });
+
+  myChart.update();
 }
 
-function deleteWorkout(index) {
-  workouts.splice(index, 1);
-
-  localStorage.setItem("workouts", JSON.stringify(workouts));
+async function deleteWorkout(index) {
+  await fetch(`http://localhost:3000/workouts/${index}`, {
+    method: "DELETE"
+  });
 
   loadWorkouts();
 }
