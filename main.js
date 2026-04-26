@@ -22,12 +22,25 @@ async function addWorkout() {
   let sets = document.getElementById("sets").value;
   let reps = document.getElementById("reps").value;
 
+ 
+  let weight = document.getElementById("weight").value;
+  let type = document.getElementById("type").value;
+  let notes = document.getElementById("notes").value;
+
   if (exercise === "" || sets === "" || reps === "") {
-    alert("Please fill in all fields");
+    alert("Please fill in all required fields");
     return;
   }
 
-  let workout = { exercise, sets, reps };
+  
+  let workout = {
+    exercise,
+    sets,
+    reps,
+    weight,
+    type,
+    notes
+  };
 
   await fetch("http://localhost:3000/workouts", {
     method: "POST",
