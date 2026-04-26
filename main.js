@@ -1,10 +1,9 @@
-let count = 0;
-let chartData = [];
 let workouts = [];
+let chartData = [];
+let count = 0;
+
 
 window.onload = function () {
-  loadWorkouts();
-
   let ctx = document.getElementById('myChart').getContext('2d');
 
   window.myChart = new Chart(ctx, {
@@ -18,12 +17,9 @@ window.onload = function () {
     }
   });
 
-
-  workouts.forEach(w => {
-    chartData.push(Number(w.sets));
-    updateChart();
-  });
+  loadWorkouts();
 };
+
 
 function addWorkout() {
   let exercise = document.getElementById("exercise").value;
@@ -35,96 +31,70 @@ function addWorkout() {
     return;
   }
 
-  let workout = { exercise, sets, reps };
+  let workout = {
+    exercise,
+    sets: Number(sets),
+    reps: Number(reps)
+  };
+
   workouts.push(workout);
 
-  saveWorkouts();
+  localStorage.setItem("workouts", JSON.stringify(workouts));
 
-  displayWorkout(workout, workouts.length - 1);
+  loadWorkouts();
 
-  count++;
-  document.getElementById("counter").textContent = count;
-
-  chartData.push(Number(sets));
-  updateChart();
 
   document.getElementById("exercise").value = "";
   document.getElementById("sets").value = "";
   document.getElementById("reps").value = "";
 }
 
-function displayWorkout(workout, index) {
-  let list = document.getElementById("workoutList");
 
-  let item = document.createElement("li");
-  item.className = "d-flex justify-content-between align-items-center";
+function loadWorkouts() {
+  let saved = localStorage.getItem("workouts");
 
-  item.innerHTML = `
-    <span>${workout.exercise} - ${workout.sets} x ${workout.reps}</span>
-    <button class="btn btn-danger btn-sm">Delete</button>
-  `;
+  workouts = saved ? JSON.parse(saved) : [];
 
-  
-  let btn = item.querySelector("button");
-  btn.onclick = function () {
-    deleteWorkout(index);
-  };
-
-  list.appendChild(item);
-}
-
-
-function deleteWorkout(index) {
-  workouts.splice(index, 1); 
-
-  saveWorkouts(); 
-
-  refreshUI(); 
-}
-
-function refreshUI() {
   let list = document.getElementById("workoutList");
   list.innerHTML = "";
 
   count = 0;
   chartData = [];
 
+
   myChart.data.labels = [];
   myChart.data.datasets[0].data = [];
-  myChart.update();
 
   workouts.forEach((w, i) => {
-    displayWorkout(w, i);
+    // display workout
+    let item = document.createElement("li");
+    item.className = "d-flex justify-content-between align-items-center";
+
+    item.innerHTML = `
+      <span>${w.exercise} - ${w.sets} x ${w.reps}</span>
+      <button class="btn btn-danger btn-sm" onclick="deleteWorkout(${i})">Delete</button>
+    `;
+
+    list.appendChild(item);
+
+
     count++;
-    chartData.push(Number(w.sets));
-    updateChart();
+
+ 
+    chartData.push(w.sets);
+    myChart.data.labels.push("Workout " + (i + 1));
   });
+
+  myChart.data.datasets[0].data = chartData;
+  myChart.update();
 
   document.getElementById("counter").textContent = count;
 }
 
-function saveWorkouts() {
+function deleteWorkout(index) {
+  workouts.splice(index, 1);
+
   localStorage.setItem("workouts", JSON.stringify(workouts));
-}
 
-function loadWorkouts() {
-  let saved = localStorage.getItem("workouts");
-
-  if (saved) {
-    workouts = JSON.parse(saved);
-
-   workouts.forEach((w, i) => {
-  displayWorkout(w, i);
-  count++;
-});
-    });
-
-    document.getElementById("counter").textContent = count;
-  }
-}
-
-function updateChart() {
-  myChart.data.labels.push("Workout " + chartData.length);
-  myChart.data.datasets[0].data = chartData;
-  myChart.update();
+  loadWorkouts();
 }
