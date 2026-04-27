@@ -67,12 +67,22 @@ async function loadWorkouts() {
   myChart.data.datasets[0].data = [];
 
   data.forEach((w, index) => {
-    let item = document.createElement("li");
+  let item = document.createElement("li");
+item.className = "list-group-item";
 
-    item.innerHTML = `
-      ${w.exercise} - ${w.sets} x ${w.reps}
-      <button onclick="deleteWorkout(${index})" class="btn btn-danger btn-sm">Delete</button>
-    `;
+item.innerHTML = `
+  <strong>${w.exercise}</strong> - ${w.sets} x ${w.reps} (${w.weight || "-"} lbs)
+  
+  <span class="badge bg-secondary ms-2">${w.type || "N/A"}</span>
+  
+  <button onclick="deleteWorkout(${index})" 
+          class="btn btn-danger btn-sm float-end">
+    Delete
+  </button>
+
+  <br>
+  <small class="text-muted">${w.notes || ""}</small>
+`;
 
     list.appendChild(item);
 
