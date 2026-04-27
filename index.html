@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>FitTrack Pro</title>
+  <h5 class="text-center">Welcome back 👋</h5>
 
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,43 +24,51 @@
   <p>Plan workouts. Monitor progress. Stay consistent.</p>
 </div>
 
-<div class="container mt-5">
-  <h3>Log Workout</h3>
+<div class="container mt-4">
+  <div class="card p-4 shadow-sm">
+    <h3>Log Workout</h3>
 
-  <input id="exercise" class="form-control mb-2" placeholder="Exercise">
-  <input id="sets" class="form-control mb-2" placeholder="Sets">
-  <input id="reps" class="form-control mb-2" placeholder="Reps">
-  <input id="weight" class="form-control mb-2" placeholder="Weight (lbs)">
+    <input id="exercise" class="form-control mb-2" placeholder="Exercise">
+    <input id="sets" class="form-control mb-2" placeholder="Sets">
+    <input id="reps" class="form-control mb-2" placeholder="Reps">
+    <input id="weight" class="form-control mb-2" placeholder="Weight (lbs)">
 
-  <select id="type" class="form-control mb-2">
-    <option value="Push">Push</option>
-    <option value="Pull">Pull</option>
-    <option value="Legs">Legs</option>
-  </select>
+    <select id="type" class="form-control mb-2">
+      <option value="Push">Push</option>
+      <option value="Pull">Pull</option>
+      <option value="Legs">Legs</option>
+    </select>
 
-  <input id="notes" class="form-control mb-2" placeholder="Notes (optional)">
+    <input id="notes" class="form-control mb-2" placeholder="Notes (optional)">
 
-  <button class="btn btn-success" onclick="addWorkout()">Add Workout</button>
+    <button class="btn btn-success w-100" onclick="addWorkout()">
+      Add Workout
+    </button>
+  </div>
 </div>
 
 <div class="container mt-4">
+  <div class="card p-3 shadow-sm">
 
-  <h4>Total Workouts Logged: <span id="counter">0</span></h4>
+    <h4>Total Workouts Logged: <span id="counter">0</span></h4>
 
-  <!-- ✅ FILTER BUTTONS (STEP 3) -->
-  <div class="mb-3">
-    <button onclick="setFilter('All')" class="btn btn-sm btn-primary">All</button>
-    <button onclick="setFilter('Push')" class="btn btn-sm btn-danger">Push</button>
-    <button onclick="setFilter('Pull')" class="btn btn-sm btn-info">Pull</button>
-    <button onclick="setFilter('Legs')" class="btn btn-sm btn-success">Legs</button>
+    <div class="mb-3">
+      <button onclick="setFilter('All')" class="btn btn-sm btn-primary">All</button>
+      <button onclick="setFilter('Push')" class="btn btn-sm btn-danger">Push</button>
+      <button onclick="setFilter('Pull')" class="btn btn-sm btn-info">Pull</button>
+      <button onclick="setFilter('Legs')" class="btn btn-sm btn-success">Legs</button>
+    </div>
+
+    <ul id="workoutList" class="list-group"></ul>
+
   </div>
-
-  <ul id="workoutList" class="list-group"></ul>
 </div>
 
-<div class="container text-center">
-  <h3 class="mt-5">Progress Chart</h3>
-  <canvas id="myChart"></canvas>
+<div class="container mt-4">
+  <div class="card p-4 shadow-sm text-center">
+    <h4>Progress Chart</h4>
+    <canvas id="myChart"></canvas>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
