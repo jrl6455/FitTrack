@@ -1,3 +1,10 @@
+let currentFilter = "All";
+
+function setFilter(type) {
+  currentFilter = type;
+  loadWorkouts();
+}
+
 let chartData = [];
 
 window.onload = function () {
@@ -66,7 +73,12 @@ async function loadWorkouts() {
   myChart.data.labels = [];
   myChart.data.datasets[0].data = [];
 
-  data.forEach((w, index) => {
+  let filtered = data.filter((w) => {
+  if (currentFilter === "All") return true;
+  return w.type === currentFilter;
+});
+
+filtered.forEach((w, index) =>  {
   let item = document.createElement("li");
 item.className = "list-group-item";
 
