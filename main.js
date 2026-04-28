@@ -87,7 +87,7 @@ item.innerHTML = `
   
   <span class="badge bg-secondary ms-2">${w.type || "N/A"}</span>
   
-  <button onclick="deleteWorkout(${index})" 
+  <button onclick="deleteWorkout('${w._id}')" 
           class="btn btn-danger btn-sm float-end">
     Delete
   </button>
@@ -112,8 +112,8 @@ item.innerHTML = `
   myChart.update();
 }
 
-async function deleteWorkout(index) {
-  await fetch(`http://localhost:3000/workouts/${index}`, {
+async function deleteWorkout(id) {
+  await fetch(`http://localhost:3000/workouts/${id}`, {
     method: "DELETE"
   });
 
