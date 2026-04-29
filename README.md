@@ -59,8 +59,6 @@ Advanced analytics dashboard
 Mobile-friendly enhancements
 Nutrition tracking features
 
-Jamari Lawrence
-GitHub: https://github.com/jrl6455
 
 Installation & Setup
 
@@ -74,17 +72,6 @@ mongoose.connect("your_mongodb_connection_string_here")
 node server.js
 
 
-<img width="1710" height="1029" alt="Screenshot 2026-04-28 at 8 49 37 PM" src="https://github.com/user-attachments/assets/c95a41c2-ad09-4aa7-8008-7344159d5ebe" />
-<img width="1308" height="707" alt="Screenshot 2026-04-28 at 8 50 02 PM" src="https://github.com/user-attachments/assets/fab3756f-8cae-43eb-bb5d-5c5929150cff" />
-<img width="1710" height="1029" alt="Screenshot 2026-04-28 at 8 49 37 PM" src="https://github.com/user-attachments/assets/ed3530bf-3f72-4699-8763-7d7dccad0713" />
-
-
-Future Improvements
-Add user authentication (login/signup)
-Edit/update workouts
-Advanced analytics dashboard
-Mobile-friendly enhancements
-Nutrition tracking features
 
 Jamari Lawrence
 GitHub: https://github.com/jrl6455
