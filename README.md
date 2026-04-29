@@ -71,6 +71,9 @@ npm install
 mongoose.connect("your_mongodb_connection_string_here")
 node server.js
 
+Link to demo video
+https://psu.mediaspace.kaltura.com/media/1_kx86w3p4
+
 
 
 Jamari Lawrence
